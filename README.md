@@ -82,3 +82,67 @@ print("경로 추적 : " ,history)
 <br> -3.046으로 지역 최적해에 빠지지 않고 전역 최적해를 잘 찾은 것을 알 수 있습니다.
 
 * * *
+
+### 선형 회귀식 추정
+파이썬에서는 회귀식 분석을 위하여 여러가지 라이브러리들을 제공합니다. 그 중에서도 머신러닝에서 주로 쓰는 언어이기 때문에 데이터들까지 제공해줍니다.<br>
+코드를 보여드리면서 설명드리겠습니다.
+
+```
+import pandas as pd
+import numpy as np
+from sklearn.datasets import load_diabetes
+import matplotlib.pyplot as plt
+
+data = load_diabetes()
+
+df = pd.DataFrame(data['data'],index=data['target'],columns = data['feature_names'])
+
+from sklearn.linear_model import LinearRegression
+lr = LinearRegression()
+y = df.index.values
+x = df.bmi.values
+
+x = x.reshape(-1,1)
+y = y.reshape(-1,1)
+
+lr.fit(x,y)
+
+print("회귀식의 기울기는 : " ,lr.coef_[0])
+print("회귀식의 y절편은 : " ,lr.intercept_)
+
+plt.scatter(x, y)
+plt.plot(x, y, color='red')
+plt.title('y = {}*x + {}'.format(lr.coef_[0], lr.intercept_))
+plt.show()
+```
+<br>
+일단 맨 처음에 import한 라이브러리들은 따로 파이썬 터미널에서 설치해주셔야 사용하실 수 있습니다. 일단 먼저 pandas 라이브러리는 파이썬 언어로 작성된 데이터를 분석 및 조작하는 것입니다.<br> numpy 라이브러리는 다차원 배열을 쉽게 처리하고 효율적으로 사용할 수 있도록 해줍니다. 여기서 위에서 제가 데이터들을 제공해준다고 했는데 sklearn.datasets에서 제공해주는 것입니다.<br> 저는 그 중에서 442명의 당뇨병 환자들의 데이터를 가지고 왔습니다. 그 밑에 matplotlib라이브러리로 선형회귀를 그려줄 것입니다.<br>
+data에다가 당뇨병 환자들의 데이터를 넣어줄 것입니다. 데이터는 사전형으로 구성되어있으며 여러가지 key들이 있다. 그 중에서 data, target, feature_names를 쓸 것이므로 df에다가 pd형태로 넣어준다. 여러가지 방법으로 회귀분석을 해 볼 수 있는데 제가 사용한 방법은 sklearn를 선형회귀입니다. sklearn에서 제공하는 linear_model을 import 합니다.ㅣ
+lr = LinearRegression() lr 변수를 생성합니다. 그러면 lr로 간단하게 회귀분석을 할 수 있습니다.<br> 아까 위에서 정의한 데이터프레임 df에서 Y는 당뇨 수치가가 될 것이고, X는 bmi로 정할 것입니다. x와 y는 사전형으로 되어있기 때문에 2차원 배열로 바꿔주기 위해 reshape를 해줍니다. lr.fit을 함으로써 회귀식을 구할 수 있습니다. 그 다음 회귀식의 기울기와 y절편을 출력해줍니다. 그리고 위에서 선형회귀를 그리기 위해 import한 plt를 이용하여 그림을 그려주면 된다.
+<br>
+
+* 출력된 그림
+
+![선형회귀 분석 글림](https://user-images.githubusercontent.com/87864025/174262741-5f35f427-d6e1-4737-a763-5289a178483e.PNG)
+
+
+<br>
+
+* 기울기와 y절편 출력값
+
+![회귀식 기울기,y절편](https://user-images.githubusercontent.com/87864025/174263083-11bf25cf-b822-4c26-958b-57b09864dc68.PNG)
+
+#### 실제 그래프와 비교
+기울기와 y절편이 잘 구해진 것인지 실제 함수를 그려 비교해보겠습니다.
+<br>
+* 회귀식 함수
+
+![션형회귀 함수그림](https://user-images.githubusercontent.com/87864025/174264062-db5fd205-c8ef-48e0-b520-3b14b403b2e5.png)
+
+그래프를 보면 0.15일때 300에 살짝 아래인 것을 보아 294가 나왔으니 회귀식을 알맞게 추정한 것 같습니다.
+
+
+
+
+
+
